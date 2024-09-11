@@ -17,8 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-//auth.register
 
 // Register
-Route::get('/register', [RegisterController::class, 'create']);
+Route::get('/register', [RegisterController::class, 'create'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
+
+// Login
+Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'create'])->name('login');
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+// Logout
+Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+// User
+Route::get('/users',[\App\Http\Controllers\Auth\UserController::class,'index']);
