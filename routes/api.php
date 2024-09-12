@@ -44,3 +44,13 @@ Route::resource('projects', \App\Http\Controllers\ProjectController::class);
 
 // Gestion des milestones
 Route::resource('milestones', \App\Http\Controllers\MilestoneController::class);
+
+
+//Paiement
+
+// routes/api.php
+Route::get('/payments', [\App\Http\Controllers\PaymentController::class, 'index']);
+Route::get('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'show']);
+Route::post('/payments', [\App\Http\Controllers\PaymentController::class, 'store']);
+Route::put('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'update']);
+Route::delete('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'destroy']);
