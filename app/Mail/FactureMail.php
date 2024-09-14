@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -12,42 +13,49 @@ use Illuminate\Queue\SerializesModels;
 class FactureMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $payment;
+    public $pdf;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public function __construct($pdf, $payment)
     {
-        //
+        $this->payment = $payment;
+        $this->pdf = $pdf;
+    }
+    public function build()
+    {
+        $pdf = PDF::loadView('invoice', [
+            'payment' => $this->payment,
+            'client' => $this->payment->client,
+            'project' => $this->payment->project
+        ]);
+
+        return $this->from('dieyesokhna2021@gmail.com', 'Sokhna')
+            ->to($this->payment->client->contact_email)
+            ->view('order_completed')
+            ->with([
+                'order' => $this->payment,
+            ])
+            ->attachData($this->pdf->output(), 'facture.pdf', [
+                'mime' => 'application/pdf',
+            ]);
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+   /* public function build()
     {
-        return new Envelope(
-            subject: 'Facture Mail',
-        );
-    }
+        $pdf = PDF::loadView('invoice', [
+            'payment' => $this->payment,
+            'client' => $this->payment->client,
+            'project' => $this->payment->project
+        ]);
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
+        return $this->from( address: 'dieyesokhna2021@gmail.com', name: 'sokhna')
+            ->to($this->payment->client->email)
+            ->view( view: 'order_completed')
+            ->with([
+                'order' => $this->payment,
+        ])
+        ->attachData($this->pdf->output(), 'facture.pdf', [
+                'mime' => 'application/pdf',
+        ]);
+    }*/
 }

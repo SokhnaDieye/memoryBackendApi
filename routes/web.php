@@ -30,3 +30,6 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login
 Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 // User
 Route::get('/users',[\App\Http\Controllers\Auth\UserController::class,'index']);
+
+
+Route::get('/invoice/{paymentId}', [\App\Http\Controllers\PaymentController::class, 'showInvoice'])->name('invoice.show');
