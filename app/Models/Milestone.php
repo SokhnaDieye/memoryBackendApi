@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Milestone extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description', 'project_id', 'date_echeance', 'status'];
+    protected $fillable = ['name', 'description', 'project_id', 'date_echeance', 'status','montant_facture'];
 
     public function project()
     {

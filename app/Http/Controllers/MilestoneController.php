@@ -19,6 +19,8 @@ class MilestoneController extends Controller
             'project_id' => 'required|integer|exists:projects,id',
             'date_echeance' => 'required|date',
             'status' => 'required|string',
+            'description' => 'required|string',
+            'montant_facture' =>'required|numeric',
         ]);
 
         $milestone = Milestone::create($request->all());
