@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->date('date_echeance');
-            $table->enum('status', ['Non commence', 'En cours', 'Complete'])->default('Non commence');
+            $table->enum('status', ['Non commence', 'En cours', 'Complete'])->default('En cours');
             $table->timestamps();
         });
     }

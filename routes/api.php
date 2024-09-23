@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,8 +52,13 @@ Route::resource('milestones', \App\Http\Controllers\MilestoneController::class);
 //Paiement
 
 // routes/api.php
-Route::get('/payments', [\App\Http\Controllers\PaymentController::class, 'index']);
-Route::get('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'show']);
-Route::post('/payments', [\App\Http\Controllers\PaymentController::class, 'store']);
-Route::put('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'update']);
-Route::delete('/payments/{id}', [\App\Http\Controllers\PaymentController::class, 'destroy']);
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::get('/payments/{id}', [PaymentController::class, 'show']);
+Route::post('/payments', [PaymentController::class, 'store']);
+Route::put('/payments/{id}', [PaymentController::class, 'update']);
+Route::delete('/payments/{id}', [PaymentController::class, 'destroy']);
+
+
+// web.php ou api.php
+Route::post('/projects/{id}/reminder', [ProjectController::class, 'sendReminder']);
+

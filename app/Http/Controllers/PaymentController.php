@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\FactureMail;
+use App\Mail\PaymentReminderMail;
 use App\Models\Payment;
 use App\Models\Project;
 use Barryvdh\DomPDF\Facade\Pdf;

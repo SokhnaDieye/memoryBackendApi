@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentReminderMail;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
@@ -53,8 +56,30 @@ class ProjectController extends Controller
 
         return response()->json([
             'project' => $project,
-            'milestones' => $project->milestones
+            'milestones' => $project->milestones ?? []
+           /* 'milestones' => $project->milestones*/
         ]);
     }
+
+
+    public function sendReminder($projectId)
+    {
+        $project = Project::find($projectId);
+
+        if (!$project || $project->isPaid || $project->end_date > now()) {
+            return response()->json(['message' => 'Le projet n\'est pas éligible pour la relance.'], 400);
+        }
+        // Convertir end_date en Carbon
+        $project->end_date = Carbon::parse($project->end_date);
+
+        // Calculer le montant dû en sommant les montants des milestones
+        $totalAmountDue = $project->milestones->sum('montant_facture'); // Assurez-vous que 'amount' est le nom correct du champ
+
+        // Envoyer l'email
+        Mail::to($project->client->email)->send(new PaymentReminderMail($project, $totalAmountDue));
+
+        return response()->json(['message' => 'Email de relance envoyé avec succès.']);
+    }
+
 
 }
